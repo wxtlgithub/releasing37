@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- MMContent create实现 -->
+	<bean id="mmContentCreator3723" class="com.lxt2.mmsgateway.mmscreator.IsagMMContentCreator">
+		<property name="commonResourceCenter" ref="commonResourceCenter"/>
+		<property name="templateReplace" >
+			<bean class="com.standardsm.individual.template.DefaultTemplateReplace"/>
+		</property>
+		<property name="individualType" value="2"/>
+	</bean>
+	<!-- 新彩信发送缺省实现 -->
+	<bean id="mmsSender3723" class="com.lxt2.mmsgateway.mmsc.IsagMmsSender">
+		<property name="mmsgConstants" ref="mmsgConstants3723"/>
+		<property name="soapSender" ref="soapSender3723"/>
+<!--		<property name="responseResendCodeList">-->
+<!--			<list>-->
+<!--				<value></value>-->
+<!--				<value></value>-->
+<!--				<value></value>-->
+<!--			</list>-->
+<!--		</property>-->
+	</bean>
+	<bean id="soapSender3723" class="com.standardsm.telcom.soapsend.SoapSender">
+		<property name="mmsSenderClient" ref="mmsSenderClient3723"/>
+	</bean>
+	<bean id="mmsSenderClient3723" class="com.standardsm.telcom.ws.client.MmsSenderClient">
+<!--        <property name="defaultUri" value="${mmsg.sendURL3723}"/>-->
+        <property name="constants" ref="constants3723" />
+        <property name="gatewayId" value="${mmsg.gatewayId3723}" />
+        <property name="isagTextContentType" value="text/plain;charset=UTF-8" />
+    </bean>
+</beans>

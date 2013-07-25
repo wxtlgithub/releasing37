@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- 彩信网关submit队列监听器的相关过滤配置begin -->
+	<!-- 敏感词过滤器 -->
+	<bean id="mmsKeyWordFilter3723" class="com.lxt2.mmsgateway.filter.MmsResourceKeyWordFilter">
+		<property name="idirtyword" ref="dirtyWord" />
+		<property name="commonResourceCenter" ref="commonResourceCenter" />
+		<property name="mmsgConstants" ref="mmsgConstants3723" />
+		<property name="exceptionHandler" ref="mmsExceptionHandle" />
+		<property name="hub" ref="hubImpl" />
+	</bean>
+	<!--电信彩信模板替换过滤器 -->
+	<bean id="mmContentCreateFilter3723" class="com.lxt2.mmsgateway.filter.IsagMmContentCreateFilter">
+		<property name="mmContentCreator" ref="mmContentCreator3723" />
+		<property name="mmsgConstants" ref="mmsgConstants3723" />
+		<property name="exceptionHandler" ref="mmsExceptionHandle" />
+		<property name="hub" ref="hubImpl" />
+	</bean>
+	<!--入发送队列监听器 -->
+	<bean id="inMmsSendQueueFilter3723" class="com.lxt2.mmsgateway.filter.InMmsSendQueueFilter">
+		<property name="mmsSendQueue" ref="mmsSendQueue3723" />
+		<property name="exceptionHandler" ref="mmsExceptionHandle" />
+		<property name="hub" ref="hubImpl" />
+
+	</bean>
+	<!-- 彩信网关submit队列监听器的相关过滤配置end -->
+
+	<!-- 彩信网关send队列监听器的相关过滤配置begin -->
+	<!--彩信速度控制过滤器 -->
+	<bean id="mmsSpeedControlFilter3723" class="com.lxt2.mmsgateway.filter.MmsSpeedControlFilter">
+		<property name="gatewayConfig" ref="yxtgatewayXml"/>
+		<property name="mm7Mmsc" ref="mmsgConstants3723"/>
+		<property name="equidistributionSpeeder">
+			<bean class="com.techcenter.speed.IntervalSecondSpeeder">
+				<constructor-arg index="0" value="100" />
+			</bean>
+		</property>
+	</bean>
+	<!--彩信下发过滤器 -->
+	<bean id="mmsContentSendFilter3723" class="com.lxt2.mmsgateway.filter.IsagMmsContentSendFilter">
+		<property name="mmsSender" ref="mmsSender3723" />
+		<property name="mmsSendQueue" ref="mmsSendQueue3723" />
+		<property name="mmsgConstants" ref="mmsgConstants3723" />
+		<property name="exceptionHandler" ref="mmsExceptionHandle" />
+		<property name="respInHubService" ref="respInHubService3723" />
+		<property name="sid" ref="ndSid" />
+		<property name="hub" ref="hubImpl" />
+		<property name="dataGather" ref="mtsDataGather3723" />
+	</bean>
+	<!-- 彩信网关send队列监听器的相关过滤配置end -->
+
+	<bean id="respInHubService3723" class="com.lxt2.mmsgateway.service.RespInHubService">
+		<property name="exceptionHandle" ref="mmsExceptionHandle" />
+		<property name="sid" ref="ndSid" />
+		<property name="hub" ref="hubImpl" />
+		<property name="saveLogger" ref="saveLogger" />
+	</bean>
+
+	<!-- 上行监控过滤 -->
+
+	<!-- 彩信上行信息入Hub过滤器 -->
+	<bean id="mmsDeliverInHubFilter3723" class="com.lxt2.mmsgateway.filter.MmsDeliverInHubFilter" />
+
+	<!-- 彩信上行预处理队列监听器相关过滤配置end -->
+
+
+	<!-- 成功彩信下行请求进入彩信下行记录表过滤器 -->
+
+	<!-- 彩信状态报告进入彩信状态报告表过滤器 -->
+	<bean id="mmsReportInHubFilter3723" class="com.lxt2.mmsgateway.filter.MmsReportInHubFilter" />
+
+    <!-- 彩信资源编码过滤器 -->
+	<bean id="mmsResourceRemouldFilter3723" class="com.lxt2.mmsgateway.filter.ResourceRemouldFilter">
+		<property name="encodeType" value="UTF-8"/>
+	</bean>
+	
+	<!-- 彩信网关submit队列监听器 -->
+	<bean id="mmsSubmitQueueListener3723" class="com.lxt2.mmsgateway.listener.MmsSubmitQueueListener" init-method="init" destroy-method="destroy">
+		<property name="hub" ref="hubImpl" />
+		<property name="maxWorker" value="3" />
+		<property name="filters">
+			<list>
+				<ref local="mmContentCreateFilter3723" />
+				<ref local="mmsKeyWordFilter3723" />
+				<ref local="mmsResourceRemouldFilter3723" />
+				<ref local="inMmsSendQueueFilter3723" />
+			</list>
+		</property>
+	</bean>
+	<!--彩信发送队列监听器 -->
+	<bean id="mmsSendQueueListener3723" class="com.lxt2.mmsgateway.listener.MmsSendQueueListener"
+		init-method="init" destroy-method="destroy">
+		<property name="maxWorker" value="3" />
+		<property name="filters">
+			<list>
+				<ref local="mmsSpeedControlFilter3723" />
+				<ref local="mmsContentSendFilter3723" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dealRpt3723" class="com.lxt2.mmsgateway.mo.IsagDealRpt" >
+		<property name="sid" ref="ndSid" />
+		<property name="hub" ref="hubImpl"/>
+		<property name="mmsgConstants" ref="mmsgConstants3723"/>
+		<property name="dataGather" ref="mtsDataGather3723"/>
+	</bean>
+</beans>

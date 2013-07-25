@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="constants3722"  class="com.standardsm.telcom.ws.Constants">
+		<property name="namespaceURI" value="http://www.bnet.cn/v3.0/"/>
+	</bean>
+
+	<!-- 网关常量信息配置 -->
+	<bean id="mmsgConstants3722" class="com.lxt2.mmsgateway.SmgpMmsgConstants" init-method="init">
+		<property name="mm7ConfigPath" value="${mmsg.mm7ConfigPath3722}"/>
+		<property name="connConfigPath" value="${mmsg.connConfigPath3722}"/>
+		<property name="gatewayId" value="${mmsg.gatewayId3722}" />
+		<property name="nodeGatewayID" value="${nodeID}" />
+                <!-- 个性化模板类型 -->
+		<property name="indvidualType" value="2" />
+		<property name="gatewayConfig" ref="yxtgatewayXml" />
+		<property name="constants" ref="constants3722" />
+		<property name="client" ref="mmsSenderClient3722" />
+	</bean>
+</beans>

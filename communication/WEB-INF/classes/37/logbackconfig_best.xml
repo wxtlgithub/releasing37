@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<!-- 基于大小分文件的文件最大值 -->
+	<property name="SIZEBASE_MAX_SIZE" value="100MB" />
+	<!-- 基于大小分文件的最多文件数 -->
+	<property name="SIZEBASE_MAX_INDEX" value="5" />
+
+	<!-- 引入文件 -->
+	<property name="USER_HOME" value="${WORKDIR}../../../logs/" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/proxyservice.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/mtprocess.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway1.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway2.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway3.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway4.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway5.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway6.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway7.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway8.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway9.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway10.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway11.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway12.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway13.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway14.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway15.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway16.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway17.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway18.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway19.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway20.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway21.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway22.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway23.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway24.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway25.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway26.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway27.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway28.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway29.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway30.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway31.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway32.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway33.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway34.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway35.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway36.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway37.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway38.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway39.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/gateway40.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/rptprocess.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/moprocess.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/hub.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/rescenter.xml" />
+	<include file="${WORKDIR}WEB-INF/classes/37/logbackbest/datalog.xml" />
+
+	<!-- 性能日志 -->
+	<appender name="performance"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${USER_HOME}performance.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${USER_HOME}performance.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>${SIZEBASE_MAX_SIZE}</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%date{HH:mm:ss.SSS} %-5p[%F:%L][%t] - %msg%n</Pattern>
+		</layout>
+	</appender>
+	<logger name="com.lxt2.clumped.task.PerformanceLoggerTask"
+		level="debug" additivity="false">
+		<appender-ref ref="performance" />
+	</logger>
+
+	<!-- sqllog -->
+	<appender name="sqllog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${USER_HOME}sql.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${USER_HOME}sql.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>${SIZEBASE_MAX_SIZE}</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%date{MM-dd HH:mm:ss.SSS} %-5p[%F:%L][%t] - %msg%n</Pattern>
+		</layout>
+	</appender>
+	<logger name="com.techcenter.dbcore.dbbase.jdbc" additivity="false">
+		<appender-ref ref="sqllog" />
+	</logger>
+
+	<!-- 系统框架日志 -->
+	<appender name="framework"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${USER_HOME}framework.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${USER_HOME}framework.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>${SIZEBASE_MAX_SIZE}</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%date{HH:mm:ss.SSS} %-5p[%F:%L][%t] - %msg%n</Pattern>
+		</layout>
+	</appender>
+	<logger name="com.lxt2.framework" level="error">
+		<appender-ref ref="framework" />
+	</logger>
+	<logger name="com.lxt2.common" level="info">
+		<appender-ref ref="framework" />
+	</logger>
+	<!-- 性能日志配置 -->
+	<logger name="com.lxt2.clumped.task.PerformanceLoggerTask"
+		level="debug" additivity="false">
+		<appender-ref ref="performance" />
+	</logger>
+
+</configuration>

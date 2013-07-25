@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 彩信submit消息队列 -->
+	<bean id="mmsSubmitQueue3709" class="com.lxt2.queuekc.ReceiveControlCacheQueue"
+		destroy-method="destroy">
+		<property name="queueName" value="mmsSubmit3709" />
+		<property name="cache">
+			<bean class="ihandy.lxt20.persist.cache.FCCache" />
+		</property>
+		<property name="listener">
+			<ref bean="mmsSubmitQueueListener3709" />
+		</property>
+		<property name="receiveControlList">
+			<list>
+				<!-- 彩信Send队列大小控制 -->
+				<!-- <ref local="mmsSendQueueSizeReceiveControl3709"/> -->
+				<bean class="com.techcenter.msgqueue.receivecontrol.MsgQueueSizeReceiveControlRunnable"
+					init-method="init" destroy-method="destroy">
+					<property name="msgQueueStatistics">
+						<bean class="com.techcenter.msgqueue.receivecontrol.MemoryQueueStatistics">
+							<property name="memoryQueue" ref="mmsSendQueue3709" />
+						</bean>
+					</property>
+					<!-- 队列允许的消息个数 -->
+					<property name="allowMaxSize" value="16" />
+					<!-- 两次监控查询之间的间隔时间，单位毫秒 -->
+					<property name="sleepTime" value="100" />
+				</bean>
+				<bean class="com.lxt2.mmsgateway.queue.StateReceiveControl">
+					<property name="dataGather" ref="mtsDataGather3709" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean id="mmsSendQueue3709" class="com.techcenter.msgqueue.MemoryQueue"
+		destroy-method="destroy">
+		<property name="queueName" value="mmsSendQueue3709" />
+		<property name="listener" ref="mmsSendQueueListener3709" />
+	</bean>
+</beans>
